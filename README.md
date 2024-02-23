@@ -135,3 +135,54 @@ function useWindowSize() {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 usePrevious</summary>
+
+---
+
+# Description
+
+The trick with this hook is to use the `useRef` hook to store the previous value.
+
+The reason we use refs is because they don't cause a re-render when they change, unlike state.
+
+When we first call useRef, this happens before the component renders for the first time, so the ref's current value is `undefined`.
+
+Because useEffect runs after the component renders, the ref's current value will be the previous value.
+
+```tsx
+function usePrevious<T>(value: T) {
+  const ref = useRef<T>();
+
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  return ref.current;
+}
+```
+
+# In depth explanation
+
+## React's Update Cycle
+
+React's update cycle can be simplified into two main phases for our context:
+
+1. **Rendering Phase:** React readies the UI based on the current state and props. This phase concludes with the virtual DOM being refreshed and arranged for applying to the actual DOM. Throughout this phase, your component function operates, executing any hooks invoked within it, such as `useState`, `useRef`, and the setup phase of `useEffect` (where you outline what the effect accomplishes, but it hasn't executed yet).
+
+2. **Commit Phase:** React applies the changes from the virtual DOM to the actual DOM, making those changes visible to the user. This is when the UI is actually updated.
+
+## Execution of `useEffect`
+
+`useEffect` is designed to run _after_ the commit phase. Its purpose is to execute side effects that should not be part of the rendering process, such as fetching data, setting up subscriptions, etc..
+
+## Why Changes in `useEffect` Don't Affect Current Cycle's DOM
+
+- **Timing:** Since `useEffect` runs after the commit phase, the DOM has already been updated with the information from the render phase by the time `useEffect` executes. React does not re-render or update the DOM again immediately after `useEffect` runs within the same cycle because React's rendering cycle has already completed.
+
+- **Intention:** This behavior is by design. React intentionally separates the effects from the rendering phase to ensure that the UI updates are efficient and predictable. If effects could modify the DOM immediately in the same cycle they run, it would lead to potential performance issues and bugs due to unexpected re-renders or state changes after the DOM has been updated.
+
+- **Ref and the DOM:** When you update `ref.current` in `useEffect`, you're modifying a value stored in memory that React uses for keeping references across renders. This update does not trigger a re-render by itself, and because `useEffect`'s changes are applied after the DOM has been updated, **there's no direct mechanism for those changes to modify the DOM until the next render cycle is triggered by state or prop changes.**
+
+</details>
