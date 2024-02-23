@@ -29,6 +29,11 @@ const hooks = [
       "Track the dimensions of the browser window with useWindowSize.",
     id: "use-window-size",
   },
+  {
+    name: "usePrevious",
+    description: "Access the previous value of a state with usePrevious.",
+    id: "use-previous",
+  },
 ];
 
 export default function Index() {
