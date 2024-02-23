@@ -17,6 +17,12 @@ const hooks = [
       "Delay the execution of function or state update with useDebounce.",
     id: "use-debounce",
   },
+  {
+    name: "useLocalStorage",
+    description:
+      "Persist state to local storage and keep it synchronized with useLocalStorage.",
+    id: "use-local-storage",
+  },
 ];
 
 export default function Index() {
