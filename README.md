@@ -186,3 +186,46 @@ React's update cycle can be simplified into two main phases for our context:
 - **Ref and the DOM:** When you update `ref.current` in `useEffect`, you're modifying a value stored in memory that React uses for keeping references across renders. This update does not trigger a re-render by itself, and because `useEffect`'s changes are applied after the DOM has been updated, **there's no direct mechanism for those changes to modify the DOM until the next render cycle is triggered by state or prop changes.**
 
 </details>
+
+<details>
+  <summary>🍿 useIntersectionObserver</summary>
+
+---
+
+`entry` gives us information about the target element's intersection with the root.
+
+The `isIntersecting` property tells us whether the element is visible in the viewport.
+
+As commented in the code, we copy `ref.current` to a variable to avoid a warning from React.
+
+**How it works in a nutshell:** In the useEffect, we create a new IntersectionObserver and observe the target element. We return a cleanup function that unobserves the target element.
+
+```tsx
+function useIntersectionObserver(options: IntersectionObserverInit = {}) {
+  const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setEntry(entry),
+      options
+    );
+
+    // Copy ref.current to a variable
+    // This is because ref.current may refer to a different element by the time the cleanup function runs
+    // This was a warning by React
+    // According to this Github issue: https://github.com/facebook/react/issues/15841
+    // It's nothing to actually worry about
+    const currentRef = ref.current;
+    if (currentRef) observer.observe(currentRef);
+
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, [options]);
+
+  return [ref, entry] as const;
+}
+```
+
+</details>
