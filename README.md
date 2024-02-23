@@ -84,3 +84,54 @@ function useLocalStorage<InitialValue>(
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useWindowSize</summary>
+
+---
+
+The initial values of windowSize should be directly coming from `window` but because we're using SSR first framework, we need to set the initial values to `null` and update them on the first render.
+
+In an SPA application, this wouldn't be necessary.
+
+Whenever the window is resized, we update the windowSize state.
+
+Finally, we remove the event listener on cleanup.
+
+Reminder: Cleanup runs before the "new" effect, it runs with the old values of the effect.
+
+```tsx
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState<{
+    width: number | null;
+    height: number | null;
+  }>({
+    width: null,
+    height: null,
+  });
+
+  useEffect(() => {
+    // Handler to call on window resize
+    function handleResize() {
+      // Set window width/height to state
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    // Needed because we're using SSR first framework
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return windowSize;
+}
+```
+
+</details>
