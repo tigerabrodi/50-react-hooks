@@ -2,8 +2,11 @@ import type { MetaFunction } from "@vercel/remix";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "50 React hooks from scratch" },
+    {
+      name: "description",
+      content: "Building and documenting 50 react hooks from scratch",
+    },
   ];
 };
 
