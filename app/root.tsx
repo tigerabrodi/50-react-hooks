@@ -1,5 +1,6 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -27,6 +28,9 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <nav className="p-4 bg-gray-800 text-white h-12 flex items-center w-full">
+          <Link to="/">Home</Link>
+        </nav>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
