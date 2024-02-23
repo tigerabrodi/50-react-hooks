@@ -17,7 +17,7 @@ function useDebounce(value: string, delay: number) {
   return debouncedValue;
 }
 
-export default function UseDebounce() {
+export default function UseDebounceRoute() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);

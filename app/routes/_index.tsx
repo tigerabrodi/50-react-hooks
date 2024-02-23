@@ -23,6 +23,12 @@ const hooks = [
       "Persist state to local storage and keep it synchronized with useLocalStorage.",
     id: "use-local-storage",
   },
+  {
+    name: "useWindowSize",
+    description:
+      "Track the dimensions of the browser window with useWindowSize.",
+    id: "use-window-size",
+  },
 ];
 
 export default function Index() {
@@ -30,7 +36,7 @@ export default function Index() {
     <main className="flex flex-col items-center gap-3 p-10">
       <h1 className="text-5xl font-bold">Hooks</h1>
       <p className="text-2xl">50 React Hooks built from scratch</p>
-      <ul className="flex items-center mt-6">
+      <ul className="flex items-center mt-6 gap-8">
         {hooks.map((hook) => (
           <li key={hook.id}>
             <a href={`/${hook.id}`} className="text-blue-600 underline">

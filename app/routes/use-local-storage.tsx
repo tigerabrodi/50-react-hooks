@@ -30,7 +30,7 @@ function useLocalStorage<InitialValue>(
   return [storedValue, setValue];
 }
 
-export default function LocalStorageComponent() {
+export default function LocalStorageRoute() {
   const [name, setName] = useLocalStorage("name", "John Doe");
 
   return (
