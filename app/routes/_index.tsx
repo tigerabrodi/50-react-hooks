@@ -34,6 +34,12 @@ const hooks = [
     description: "Access the previous value of a state with usePrevious.",
     id: "use-previous",
   },
+  {
+    name: "useIntersectionObserver",
+    description:
+      "Track the visibility of an element with useIntersectionObserver.",
+    id: "use-intersection-observer",
+  },
 ];
 
 export default function Index() {
