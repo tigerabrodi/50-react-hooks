@@ -405,3 +405,39 @@ function useSessionStorage<InitialValue>(
 ```
 
 </details>
+
+<details>
+  <summary>🍿 usePreferredLanguage</summary>
+
+---
+
+This hook is used to get the user's preferred language.
+
+It uses the `navigator.language` property to get the user's preferred language.
+
+Every time the user's preferred language changes, the `languagechange` event is fired, and we update the language state.
+
+```tsx
+function usePreferredLanguage() {
+  const [language, setLanguage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handler = () => {
+      setLanguage(navigator.language);
+    };
+
+    // Set the initial language
+    handler();
+
+    window.addEventListener("languagechange", handler);
+
+    return () => {
+      window.removeEventListener("languagechange", handler);
+    };
+  }, []);
+
+  return language;
+}
+```
+
+</details>
