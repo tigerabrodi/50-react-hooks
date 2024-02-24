@@ -72,6 +72,12 @@ const hooks = [
     description: "Fetch data with ease and flexibility with useFetch.",
     id: "use-fetch",
   },
+  {
+    name: "useContinuousRetry",
+    description:
+      "Automates retries of a callback function until it succeeds with useContinuousRetry",
+    id: "use-continuous-retry",
+  },
 ];
 
 export default function Index() {
