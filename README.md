@@ -488,3 +488,81 @@ export function useFetch<Data>(url: string) {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useContinuousRetry</summary>
+
+---
+
+This hook is used to retry a function continuously until it returns true.
+
+The nice part here is that you can specify whatever you want to retry in the callback function.
+
+As commented why we need `useCallback`, it's because we want to retain the same reference across renders, unless its dependencies change.
+
+The callback function would change if e.g. the state inside the callback changes.
+
+Let's look at the route for example:
+
+```tsx
+export default function UseContinuousRetryRoute() {
+  const [count, setCount] = useState(0);
+  const hasResolved = useContinuousRetry(() => count > 10, 1000, {
+    maxRetries: 15,
+  });
+
+  return (
+    // ...
+  );
+}
+```
+
+If `count` changes, the callback function would change, and `attemptRetry` would be re-created as a result.
+
+In the useEffect of the hook, we clean up the interval when the component unmounts.
+
+```tsx
+interface UseContinuousRetryOptions {
+  interval?: number;
+  maxRetries?: number;
+}
+
+function useContinuousRetry(
+  callback: () => boolean,
+  interval: number = 100,
+  options: UseContinuousRetryOptions = {}
+) {
+  const [hasResolved, setHasResolved] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const maxRetries = options.maxRetries;
+
+  // Using useCallback, the function retains the same reference across renders,
+  // unless its dependencies change. This stability prevents unnecessary re-executions
+  // of effects or callbacks that depend on this function, controlling the retry behavior as expected.
+  // Without useCallback, the function would be re-created on every render, even if its dependencies haven't changed.
+  const attemptRetry = useCallback(() => {
+    if (callback()) {
+      setHasResolved(true);
+      return;
+    }
+    setRetryCount((count) => count + 1);
+  }, [callback]);
+
+  useEffect(() => {
+    const hasRetryReachedLimit =
+      maxRetries !== undefined && retryCount >= maxRetries;
+    if (hasResolved || hasRetryReachedLimit) {
+      return;
+    }
+
+    const id = setInterval(attemptRetry, interval);
+
+    return () => clearInterval(id);
+  }, [attemptRetry, hasResolved, interval, maxRetries, retryCount]);
+
+  return hasResolved;
+}
+```
+
+</details>
