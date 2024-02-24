@@ -45,7 +45,7 @@ function useContinuousRetry(
 export default function UseContinuousRetryRoute() {
   const [count, setCount] = useState(0);
   const hasResolved = useContinuousRetry(() => count > 10, 1000, {
-    maxRetries: 15,
+    maxRetries: 5,
   });
 
   return (
