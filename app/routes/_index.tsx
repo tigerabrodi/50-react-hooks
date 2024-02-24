@@ -67,6 +67,11 @@ const hooks = [
       "Detect the user's preferred language with usePreferredLanguage.",
     id: "use-preferred-language",
   },
+  {
+    name: "useFetch",
+    description: "Fetch data with ease and flexibility with useFetch.",
+    id: "use-fetch",
+  },
 ];
 
 export default function Index() {
