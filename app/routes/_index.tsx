@@ -78,6 +78,12 @@ const hooks = [
       "Automates retries of a callback function until it succeeds with useContinuousRetry",
     id: "use-continuous-retry",
   },
+  {
+    name: "useVisibilityChange",
+    description:
+      "Track the visibility state of the document with useVisibilityChange.",
+    id: "use-visibility-change",
+  },
 ];
 
 export default function Index() {
