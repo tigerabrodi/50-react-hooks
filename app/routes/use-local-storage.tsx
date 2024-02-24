@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ClientOnly } from "remix-utils/client-only";
 
 function useLocalStorage<InitialValue>(
   key: string,
@@ -9,7 +10,6 @@ function useLocalStorage<InitialValue>(
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
-      console.log(error);
       return initialValue;
     }
   });
@@ -34,14 +34,18 @@ export default function LocalStorageRoute() {
   const [name, setName] = useLocalStorage("name", "John Doe");
 
   return (
-    <div>
-      <h1>useLocalStorage Hook Example</h1>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <p>Your name is stored in local storage: {name}</p>
-    </div>
+    <ClientOnly>
+      {() => (
+        <div>
+          <h1>useLocalStorage Hook Example</h1>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <p>Your name is stored in local storage: {name}</p>
+        </div>
+      )}
+    </ClientOnly>
   );
 }
