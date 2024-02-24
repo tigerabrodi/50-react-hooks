@@ -327,3 +327,43 @@ function useMediaQuery(query: string) {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useOrientation</summary>
+
+---
+
+This hook is used to monitor the orientation of the user's device.
+
+For example, you can use it to change the layout of your app based on the orientation of the device.
+
+Orientation means whether the device is in portrait or landscape mode, when e.g. holding your phone, you can hold it vertically or horizontally.
+
+We set up an event listener for the `orientationchange` event and update the orientation state whenever the orientation changes.
+
+```tsx
+function useOrientation() {
+  const [orientation, setOrientation] = useState<ScreenOrientation | null>(
+    null
+  );
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      setOrientation(window.screen.orientation);
+    };
+
+    // Set the initial orientation
+    handleOrientationChange();
+
+    window.addEventListener("orientationchange", handleOrientationChange);
+
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientationChange);
+    };
+  }, []);
+
+  return orientation;
+}
+```
+
+</details>
