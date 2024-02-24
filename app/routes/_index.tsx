@@ -89,6 +89,11 @@ const hooks = [
     description: "Load a script and track its state with useScript.",
     id: "use-script",
   },
+  {
+    name: "useRenderInfo",
+    description: "Access information about the render with useRenderInfo.",
+    id: "use-render-info",
+  },
 ];
 
 export default function Index() {
