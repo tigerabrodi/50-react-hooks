@@ -674,3 +674,62 @@ function useScript(
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useRenderInfo</summary>
+
+---
+
+This hook is used to log information about the component's renders.
+
+During development, you may see 2 renders of a component and wonder why it's happening. It's because of React's StrictMode.
+
+This hook is useful when you want to log information about the component's renders e.g. when debugging performance issues.
+
+We use useRef to store the render information and log it to the console. Refs are perfect for this because they don't cause a re-render when they change, unlike state. And they persist across renders.
+
+The reason we don't need useEffect here is because we don't need to run the effect after the component renders, we just need to run it once when the component mounts, and as mentioned, to not lose the state, we use useRef.
+
+Another thing to not get confused: Because `info.timestamp` is updated after `info.sinceLast` is calculated, `info.sinceLast` will always be the time since the previous render, not the current one. That's why "now" is used when `info.timestamp` is null, which is the first render.
+
+```tsx
+interface RenderInfo {
+  readonly module: string;
+  renders: number;
+  timestamp: null | number;
+  sinceLast: null | number | "[now]";
+}
+
+const useRenderInfo = (
+  moduleName: string = "Unknown component",
+  log: boolean = true
+) => {
+  const { current: info } = useRef<RenderInfo>({
+    module: moduleName,
+    renders: 0,
+    timestamp: null,
+    sinceLast: null,
+  });
+
+  const now = Date.now();
+
+  info.renders += 1;
+  info.sinceLast = info.timestamp ? (now - info.timestamp) / 1000 : "[now]";
+  info.timestamp = now;
+
+  if (log) {
+    console.group(`${moduleName} info`);
+    console.log(
+      `Render no: ${info.renders}${
+        info.renders > 1 ? `, ${info.sinceLast}s since last render` : ""
+      }`
+    );
+    console.dir(info);
+    console.groupEnd();
+  }
+
+  return info;
+};
+```
+
+</details>
