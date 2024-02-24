@@ -61,6 +61,12 @@ const hooks = [
     description: "Persist state to session storage with useSessionStorage.",
     id: "use-session-storage",
   },
+  {
+    name: "usePreferredLanguage",
+    description:
+      "Detect the user's preferred language with usePreferredLanguage.",
+    id: "use-preferred-language",
+  },
 ];
 
 export default function Index() {
