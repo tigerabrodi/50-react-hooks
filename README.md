@@ -229,3 +229,61 @@ function useIntersectionObserver(options: IntersectionObserverInit = {}) {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useNetworkState</summary>
+
+---
+
+This hook is used to monitor the network state of the user.
+
+If you peek into the file `app/routes/use-network-state.tsx`, you'll see we had to author our own type for `navigator.connection` to avoid TypeScript errors.
+
+The main key here is to `navigator`, especially `navigator.connection`.
+
+Now, to be fair, this is an experimental API, as documented on MDN: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/connection.
+
+How it works in a nutshell: Similar to other hooks that use browser events, we set up event listeners for `online`, `offline`, and `change` events.
+
+`online` -> when browser goes online.
+`offline` -> when browser goes offline.
+`change` -> when the network state changes.
+
+```tsx
+function useNetworkState() {
+  const [networkState, setNetworkState] = useState<NetworkState>({
+    online: false,
+  });
+
+  useEffect(() => {
+    const updateNetworkState = () => {
+      setNetworkState({
+        online: navigator.onLine,
+        downlink: navigator.connection?.downlink,
+        downlinkMax: navigator.connection?.downlinkMax,
+        effectiveType: navigator.connection?.effectiveType,
+        rtt: navigator.connection?.rtt,
+        saveData: navigator.connection?.saveData,
+        type: navigator.connection?.type,
+      });
+    };
+
+    // Call the function once to get the initial state
+    updateNetworkState();
+
+    window.addEventListener("online", updateNetworkState);
+    window.addEventListener("offline", updateNetworkState);
+    navigator.connection?.addEventListener("change", updateNetworkState);
+
+    return () => {
+      window.removeEventListener("online", updateNetworkState);
+      window.removeEventListener("offline", updateNetworkState);
+      navigator.connection?.removeEventListener("change", updateNetworkState);
+    };
+  }, []);
+
+  return networkState;
+}
+```
+
+</details>
