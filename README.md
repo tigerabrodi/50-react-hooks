@@ -566,3 +566,45 @@ function useContinuousRetry(
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useVisibilityChange</summary>
+
+---
+
+This hook is used to monitor the visibility state of the document.
+
+It's useful for when you want to pause or resume a video when the user switches tabs, for example.
+
+The `documentVisible` state is initially set to `null` and it is set to `true` when the document becomes visible.
+
+Because we're using an SSR first framework, we need to set the initial state in the `useEffect` hook.
+
+We also use `document.addEventListener` to listen for the `visibilitychange` event and update the `documentVisible` state accordingly.
+
+Finally, we use `document.removeEventListener` to remove the event listener when the component unmounts.
+
+```tsx
+function useVisibilityChange() {
+  const [documentVisible, setDocumentVisible] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setDocumentVisible(document.visibilityState === "visible");
+    };
+
+    // Set the initial state
+    handleVisibilityChange();
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  return documentVisible;
+}
+```
+
+</details>
