@@ -51,6 +51,11 @@ const hooks = [
     description: "Track the state of a media query with useMediaQuery.",
     id: "use-media-query",
   },
+  {
+    name: "useOrientation",
+    description: "Track the orientation of the device with useOrientation.",
+    id: "use-orientation",
+  },
 ];
 
 export default function Index() {
