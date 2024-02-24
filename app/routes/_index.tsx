@@ -84,6 +84,11 @@ const hooks = [
       "Track the visibility state of the document with useVisibilityChange.",
     id: "use-visibility-change",
   },
+  {
+    name: "useScript",
+    description: "Load a script and track its state with useScript.",
+    id: "use-script",
+  },
 ];
 
 export default function Index() {
