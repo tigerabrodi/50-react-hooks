@@ -27,7 +27,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="flex flex-col items-center">
         <nav className="p-4 bg-gray-800 text-white h-12 flex items-center w-full">
           <Link to="/">Home</Link>
         </nav>

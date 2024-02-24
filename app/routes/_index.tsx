@@ -46,14 +46,19 @@ const hooks = [
       "Monitor and adapt to network conditions seamlessly with useNetworkState.",
     id: "use-network-state",
   },
+  {
+    name: "useMediaQuery",
+    description: "Track the state of a media query with useMediaQuery.",
+    id: "use-media-query",
+  },
 ];
 
 export default function Index() {
   return (
-    <main className="flex flex-col items-center gap-3 p-10">
+    <main className="flex flex-col items-center gap-3 p-10 w-8/12">
       <h1 className="text-5xl font-bold">Hooks</h1>
       <p className="text-2xl">50 React Hooks built from scratch</p>
-      <ul className="flex items-center mt-6 gap-8">
+      <ul className="flex items-center mt-6 gap-8 flex-wrap">
         {hooks.map((hook) => (
           <li key={hook.id}>
             <a href={`/${hook.id}`} className="text-blue-600 underline">
