@@ -441,3 +441,50 @@ function usePreferredLanguage() {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useFetch</summary>
+
+---
+
+This hook is used to fetch data from an API.
+
+It uses the `fetch` API to make a request to the specified URL.
+
+It's gonna fetch the data every time the URL changes.
+
+The `useEffect` hook is used to fetch the data when the URL changes.
+
+It returns an object with the data, loading state, and error.
+
+A common bad practice is to use boolean for the loading state, status is a better approach and more accurate
+
+```tsx
+export function useFetch<Data>(url: string) {
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "error" | "success"
+  >("idle");
+  const [data, setData] = useState<Data | null>(null);
+  const [error, setError] = useState<unknown | null>(null);
+
+  useEffect(() => {
+    if (!url) return;
+    setStatus("loading");
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data as Data);
+        setStatus("success");
+      })
+      .catch((error) => {
+        setError(error);
+        setStatus("error");
+      });
+  }, [url]);
+
+  return { error, isLoading: status === "loading", data };
+}
+```
+
+</details>
