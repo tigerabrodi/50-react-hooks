@@ -40,6 +40,12 @@ const hooks = [
       "Track the visibility of an element with useIntersectionObserver.",
     id: "use-intersection-observer",
   },
+  {
+    name: "useNetworkState",
+    description:
+      "Monitor and adapt to network conditions seamlessly with useNetworkState.",
+    id: "use-network-state",
+  },
 ];
 
 export default function Index() {
