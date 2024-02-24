@@ -608,3 +608,69 @@ function useVisibilityChange() {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useScript</summary>
+
+---
+
+This hook is used to load an external script.
+
+It's useful for when you want to load a third-party script, like Google Analytics, for example.
+
+The `status` state is initially set to `loading` and it is set to `ready` when the script is loaded successfully, otherwise it is set to `error`.
+
+If script doesn't exist, we create a new script element and append it to the body.
+
+If it does exist, we set the status to `ready`.
+
+We also use `script.addEventListener` to listen for the `load` and `error` events and update the `status` accordingly.
+
+Finally, we use `script.removeEventListener` to remove the event listener when the component unmounts.
+
+```tsx
+type ScriptStatus = "loading" | "ready" | "error";
+
+function useScript(
+  src: string,
+  options?: { removeOnUnmount?: boolean }
+): ScriptStatus {
+  const [status, setStatus] = useState<ScriptStatus>(src ? "loading" : "error");
+
+  const setReady = () => setStatus("ready");
+  const setError = () => setStatus("error");
+
+  useEffect(() => {
+    let script: HTMLScriptElement | null = document.querySelector(
+      `script[src="${src}"]`
+    );
+
+    if (!script) {
+      script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      document.body.appendChild(script);
+
+      script.addEventListener("load", setReady);
+      script.addEventListener("error", setError);
+    } else {
+      setStatus("ready");
+    }
+
+    return () => {
+      if (script) {
+        script.removeEventListener("load", setReady);
+        script.removeEventListener("error", setError);
+
+        if (options?.removeOnUnmount) {
+          script.remove();
+        }
+      }
+    };
+  }, [src, options?.removeOnUnmount]);
+
+  return status;
+}
+```
+
+</details>
