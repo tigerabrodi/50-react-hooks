@@ -287,3 +287,43 @@ function useNetworkState() {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useMediaQuery</summary>
+
+---
+
+We set up a listener for the media query and update the matches state whenever the media query changes.
+
+The matches state is initially set to false, and it is set to true when the media query matches.
+
+We also return a cleanup function that removes the event listener when the component unmounts.
+
+This hook is useful for conditionally rendering content based on the state of a media query.
+
+For example, you can use it to show or hide certain elements based on the screen size.
+
+```tsx
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    setMatches(mediaQuery.matches);
+
+    const listener = (event: MediaQueryListEvent) => {
+      setMatches(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", listener);
+
+    return () => {
+      mediaQuery.removeEventListener("change", listener);
+    };
+  }, [query]);
+
+  return matches;
+}
+```
+
+</details>
