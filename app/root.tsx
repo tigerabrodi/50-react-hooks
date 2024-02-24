@@ -20,14 +20,14 @@ export const links: LinksFunction = () => [
 
 export default function App() {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col items-center">
+      <body className="flex flex-col items-center h-full">
         <nav className="p-4 bg-gray-800 text-white h-12 flex items-center w-full">
           <Link to="/">Home</Link>
         </nav>
