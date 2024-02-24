@@ -367,3 +367,41 @@ function useOrientation() {
 ```
 
 </details>
+
+<details>
+  <summary>🍿 useSessionStorage</summary>
+
+---
+
+This hook is similar to the `useLocalStorage` hook, but it uses `sessionStorage` instead of `localStorage`.
+
+```tsx
+function useSessionStorage<InitialValue>(
+  key: string,
+  initialValue: InitialValue
+) {
+  const [value, setValue] = useState<InitialValue>(() => {
+    if (typeof window === "undefined") {
+      return initialValue;
+    }
+
+    const storedValue = sessionStorage.getItem(key);
+    return storedValue !== null ? JSON.parse(storedValue) : initialValue;
+  });
+
+  // Set Inital Value
+  useEffect(() => {
+    setValue(
+      JSON.parse(sessionStorage.getItem(key) || JSON.stringify(initialValue))
+    );
+  }, [initialValue, key]);
+
+  useEffect(() => {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue] as const;
+}
+```
+
+</details>
