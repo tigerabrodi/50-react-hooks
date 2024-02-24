@@ -56,6 +56,11 @@ const hooks = [
     description: "Track the orientation of the device with useOrientation.",
     id: "use-orientation",
   },
+  {
+    name: "useSessionStorage",
+    description: "Persist state to session storage with useSessionStorage.",
+    id: "use-session-storage",
+  },
 ];
 
 export default function Index() {
